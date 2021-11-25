@@ -1,8 +1,5 @@
 <template>
   <div class="search">
-    Search:
-      <input type="text" v-model="searchTerm" />
-      <button @click="search">Search</button>
       <ul>
         <li v-for="image in images" :key="image">
           <img :src="imageUrl(image)" width="512" height="512" />
@@ -14,14 +11,24 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import axios from "axios";
+import {Watch, Prop} from "vue-property-decorator";
 
-@Options({
-  props: {
-  }
-})
-export default class HelloWorld extends Vue {
-  searchTerm = '';
+
+export default class SearchResults extends Vue {
+  @Prop({required: true})
+  searchTerm!: string
   images = [];
+
+  mounted() {
+    if (this.searchTerm.length > 0) {
+      this.search();
+    }
+  }
+
+  @Watch("searchTerm")
+  doSearch(){
+    this.search();
+  }
 
   search(): void {
     console.log(process.env.VUE_APP_BASE_API_URL)
