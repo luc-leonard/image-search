@@ -66,25 +66,6 @@ def get_embeddings():
     return json.dumps(ret)
 
 
-# @app.get('/embeddings/<string:term>')
-# def get_embeddings_(term):
-#     with torch.no_grad():
-#         term = urllib.parse.unquote(term).split(';')
-#         text_features = app.clip_model.encode_text(clip.tokenize(term).to(device))
-#
-#         all_features = torch.cat([app.images_features.cpu(), text_features.cpu()])
-#         all_features = all_features / all_features.norm(dim=-1, keepdim=True)
-#         tsne_proj = app.tsne.fit_transform(all_features)
-#         ret = []
-#         for i, features in enumerate(tsne_proj):
-#             path = app.images_path[i] if i < len(app.images_path) else None
-#             if path is None:
-#                 path = "text_" + term[i - len(app.images_path)]
-#                 print(path, features)
-#             ret.append({'path': str(path), 'x': float(features[0]), 'y': float(features[1])})
-#         return json.dumps(ret)
-
-
 @app.get('/embeddings/<string:term>')
 def get_embeddings_(term):
     with torch.no_grad():
